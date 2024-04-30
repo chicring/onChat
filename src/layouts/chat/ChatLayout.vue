@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import VerticalSidebar from "@/layouts/chat/vertical-sidebar/VerticalSidebar.vue";
+import VerticalHeader from "@/layouts/chat/vertical-header/VerticalHeader.vue";
+
 </script>
 
 <template>
@@ -7,7 +10,9 @@
     theme="PurpleTheme"
     class=""
   >
+    <VerticalSidebar></VerticalSidebar>
 
+    <VerticalHeader></VerticalHeader>
     <v-main>
       <v-container fluid class="page-wrapper">
         <div>
