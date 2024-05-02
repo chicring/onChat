@@ -1,5 +1,11 @@
 import {Config} from "@/store/setting.ts";
+import {defineStore} from "pinia";
+import {ref, Ref} from "vue";
+import {localStorageKey} from "@/store/constant.ts";
+import { OpenAiRequestBody, ReqMessage} from "../api/chat/types";
 
+import GptClient from "../api/chat";
+import {getUuid} from "@/util/uuid.ts";
 
 export interface Session {
     id: string;
@@ -16,3 +22,85 @@ export interface Message {
     content?: string;
     token?: string;
 }
+
+export const useSessionStore  = defineStore(
+    'session',
+    () => {
+        const sessions : Ref<Session[]> = ref([])
+
+        const lastRely = ref(null as Message | null);
+        const isRelying = ref(false);
+        const currentTopic = ref('')
+
+        async function addSession(session: Session) {
+            sessions.value.push(session)
+        }
+
+        async function deleteSessionById(id: string) {
+            sessions.value = sessions.value.filter(session => session.id !== id);
+        }
+
+        async function deleteAllSessions() {
+            sessions.value = []
+        }
+
+        async function findSessionById(id: string)  {
+            return sessions.value.find(s => s.id === id)
+        }
+
+        async function doChat(sessionId: string, messagelist: Message[], config: Config) {
+            isRelying.value = true;
+            const requestBody: OpenAiRequestBody = {
+                messages: messagelist.slice(Math.max(0, messagelist.length - config.max_history)).map((message) => {
+                    return {
+                        role: message.role,
+                        content: message.content,
+                    } as ReqMessage;
+                }),
+                model: config.model,
+                max_tokens: config.max_tokens,
+                temperature: config.temperature,
+                top_p: config.top_p,
+                frequency_penalty: config.frequency_penalty,
+                presence_penalty: config.presence_penalty,
+                stream: config.stream,
+            };
+
+            await GptClient.getInstance().post(
+                requestBody,
+                (data) => {
+                    lastRely.value = {
+                        date: Math.floor(Date.now() / 1000),
+                        role: "assistant",
+                        content: data,
+                        id: getUuid(),
+                    } as Message;
+                },
+                (data) => {
+                    sessions.value.find(s => s.id === sessionId)?.messages.push(lastRely.value)
+                    lastRely.value = null
+                    isRelying.value = false
+                },
+                (error) => {
+                    const errorMessage: Message = {
+                        date: Math.floor(Date.now() / 1000),
+                        role: "assistant",
+                        content: error.message,
+                    }
+                    sessions.value.find(s => s.id === sessionId)?.messages.push(errorMessage)
+                    lastRely.value = null;
+                    isRelying.value = false;
+                }
+
+            )
+        }
+
+        return { sessions, lastRely, isRelying, currentTopic, addSession, deleteSessionById, deleteAllSessions, findSessionById, doChat }
+    },
+    {
+        persist: {
+            key: localStorageKey.Sessions,
+            paths: ['sessions']
+        }
+    }
+)

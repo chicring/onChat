@@ -19,7 +19,7 @@ html {
 }
 
 .page-wrapper {
-  min-height: calc(100vh - 100px);
+  min-height: calc(100dvh - 70px);
   padding: 15px;
   border-radius: $border-radius-root;
   background: rgb(var(--v-theme-containerBg));

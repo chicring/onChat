@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@traptitech/markdown-it-katex": "^3.6.0",
     "apexcharts": "^3.49.0",
+    "axios": "^1.6.8",
     "dayjs": "^1.11.11",
+    "highlight.js": "^11.9.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-link-attributes": "^4.0.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vite-plugin-vuetify": "^2.0.3",
@@ -20,9 +25,12 @@
     "vue3-apexcharts": "^1.5.2",
     "vue3-perfect-scrollbar": "^2.0.0",
     "vuetify": "^3.5.17",
+    "vuetify-sonner": "^0.3.14",
     "vuetify-use-dialog": "^0.6.11"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
+    "@types/markdown-it": "^14.1.1",
     "@vitejs/plugin-vue": "^5.0.4",
     "sass": "^1.75.0",
     "typescript": "^5.2.2",
