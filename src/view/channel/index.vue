@@ -1,5 +1,13 @@
 <script setup lang="ts">
+import {onMounted, ref} from "vue";
+import {findAllChannel} from "../../api/methods/channel";
+import { ChannelConfig } from "./components/channelItem.ts";
+import ChannelItem from "@/view/channel/components/ChannelItem.vue";
 
+const channels = ref([] as ChannelConfig[])
+onMounted(async () => {
+  channels.value = await findAllChannel();
+})
 </script>
 
 <template>
@@ -16,9 +24,18 @@
       1. 必须在启动应用的时候设置代理才能启用
     </v-card-subtitle>
 
-    <v-card-actions class="justify-end">
-      <AddchannelDialog @created="refresh()"></AddchannelDialog>
-    </v-card-actions>
+<!--    <v-card-actions class="justify-end">-->
+<!--      <AddchannelDialog @created="refresh()"></AddchannelDialog>-->
+<!--    </v-card-actions>-->
+  </v-card>
+
+
+  <v-card>
+    <v-card-text>
+      <template v-for="item in channels">
+        <ChannelItem :channel="item" />
+      </template>
+    </v-card-text>
   </v-card>
 </template>
 

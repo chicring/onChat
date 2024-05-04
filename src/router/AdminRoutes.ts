@@ -32,6 +32,16 @@ const AdminRoutes = {
             name: 'settings',
             path: '/admin/settings',
             component: () => import('@/view/settings/index.vue'),
+        },
+        {
+            name: 'models',
+            path: '/admin/models',
+            component: () => import('@/view/models/index.vue'),
+        },
+        {
+            name: 'channel',
+            path: '/admin/channel',
+            component: () => import('@/view/channel/index.vue'),
         }
     ]
 }

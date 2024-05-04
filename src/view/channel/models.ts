@@ -1,4 +1,4 @@
-export const Model = [
+const Model = [
     { props: { header: 'OpenAI' } },
     {
         title: 'gpt-4',
@@ -75,3 +75,6 @@ export const Model = [
         value: 'moonshot-v1-32k',
     }
 ] as const;
+
+
+export default Model;

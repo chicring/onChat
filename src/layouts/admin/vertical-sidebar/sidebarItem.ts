@@ -30,7 +30,7 @@ const items = [
         title: "模型",
         icon: BrandOpenaiIcon,
 
-        to: "/admin/model"
+        to: "/admin/models"
     },
     {
         title: "知识库",
