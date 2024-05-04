@@ -70,6 +70,8 @@ defineExpose({ textRef })
 </template>
 
 <style lang="scss">
+@import "@/scss/components/GithubMarkdown";
+@import "@/scss/components/HightLight";
 .markdown-body {
   background-color: transparent;
   font-size: 14px;

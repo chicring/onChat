@@ -37,4 +37,7 @@ const props = defineProps<{
   font-size: 0.7em; /* Adjust this value as needed */
   opacity: 0.25; /* Add this line */
 }
+.v-card-text {
+  padding: 12px;
+}
 </style>

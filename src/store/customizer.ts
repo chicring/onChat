@@ -27,6 +27,8 @@ export const useCustomizerStore = defineStore(
         const Customizer_drawer = ref(config.Customizer_drawer);
         const mini_sidebar = ref(config.mini_sidebar);
         const Theme = ref(config.Theme);
+        const ADMIN_mini_sidebar = ref(false);
+        const ADMIN_Sidebar_drawer = ref(true);
 
         function SET_SIDEBAR_DRAWER() {
             Sidebar_drawer.value = !Sidebar_drawer.value;
@@ -44,6 +46,11 @@ export const useCustomizerStore = defineStore(
             Theme.value = payload;
         }
 
-        return {Sidebar_drawer, Customizer_drawer, mini_sidebar, Theme, SET_SIDEBAR_DRAWER, SET_MINI_SIDEBAR, SET_CUSTOMIZER_DRAWER, SET_THEME}
+        function SET_ADMIN_MINI_SIDEBAR(payload: boolean) {
+            ADMIN_mini_sidebar.value = payload;
+        }
+        return {Sidebar_drawer, Customizer_drawer, mini_sidebar, Theme,ADMIN_mini_sidebar, ADMIN_Sidebar_drawer,
+            SET_SIDEBAR_DRAWER, SET_MINI_SIDEBAR, SET_CUSTOMIZER_DRAWER, SET_THEME,
+        }
     }
 )

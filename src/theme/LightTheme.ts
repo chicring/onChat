@@ -11,7 +11,7 @@ const PurpleTheme : ThemeTypes = {
         primary: '#1e88e5',
         secondary: '#5e35b1',
         info: '#03c9d7',
-        success: '#00c853',
+        success: '#4CAF50',
         accent: '#FFAB91',
         warning: '#ffc107',
         error: '#f44336',

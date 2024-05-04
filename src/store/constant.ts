@@ -6,5 +6,6 @@ export enum localStorageKey {
     Config = "on-chat-config",
     Prompt = "prompt-store",
     Update = "chat-update",
+    Auth = "on-chat-auth",
 }
 

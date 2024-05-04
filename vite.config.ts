@@ -6,7 +6,14 @@ import { fileURLToPath, URL } from 'node:url';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-      vue(),
+      vue({
+            template: {
+                compilerOptions: {
+                    isCustomElement: (tag) => ['v-list-recognize-title'].includes(tag)
+                }
+            }
+
+      }),
 
       vuetify({
         autoImport: true,
@@ -21,6 +28,9 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {}
     }
+  },
+  build: {
+    chunkSizeWarningLimit: 1024 * 1024 // Set the limit to 1 MB
   },
   optimizeDeps: {
       exclude: ['vuetify'],

@@ -17,5 +17,17 @@ export const vuetify = createVuetify({
             PurpleTheme,
             PurpleThemeDark
         }
+    },
+    defaults: {
+        VBtn: {},
+        VCard: {
+            rounded: 'md'
+        },
+        VTextField: {
+            rounded: 'lg'
+        },
+        VTooltip: {
+            location: 'top'
+        }
     }
 })

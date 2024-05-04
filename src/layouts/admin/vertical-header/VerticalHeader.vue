@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useCustomizerStore } from '@/store/customizer';
-import { useSessionStore} from "@/store/session.ts";
+import {getEmailAvatar} from "@/util/EmailAvatar.ts";
+import ProfileDD from "@/layouts/admin/vertical-header/ProfileDD.vue";
+import {useAuthStore} from "@/store/auth.ts";
 
+const authStore = useAuthStore();
 const customizer = useCustomizerStore();
-const sessionStore = useSessionStore();
 
 const darkMode = ref(false)
 function toggleTheme () {
@@ -16,7 +18,6 @@ function toggleTheme () {
 
 <template>
   <v-app-bar elevation="0" height="60">
-    <!-- 侧边栏缩放按钮   -->
     <v-btn
         class="hidden-xs text-secondary"
         color="lightsecondary"
@@ -24,7 +25,7 @@ function toggleTheme () {
         rounded="lg"
         variant="flat"
         size="small"
-        @click="customizer.SET_MINI_SIDEBAR(!customizer.mini_sidebar)"
+        @click="customizer.ADMIN_mini_sidebar = !customizer.ADMIN_mini_sidebar"
     >
       <Menu2Icon size="20" stroke-width="1.5" />
     </v-btn>
@@ -36,28 +37,25 @@ function toggleTheme () {
         rounded="lg"
         variant="flat"
         size="small"
-        @click="customizer.SET_SIDEBAR_DRAWER"
+        @click="customizer.ADMIN_Sidebar_drawer = !customizer.ADMIN_Sidebar_drawer"
     >
       <Menu2Icon size="20" stroke-width="1.5" />
     </v-btn>
 
-    <v-app-bar-title>
-      <strong>{{sessionStore.currentTopic}}</strong>
-    </v-app-bar-title>
-    <v-spacer />
+    <v-spacer/>
 
-    <v-switch
-        v-model="darkMode"
-        false-icon="mdi-weather-sunny"
-        true-icon="mdi-weather-night"
-        @click="toggleTheme"
-        hide-details
-        inset
-        density="compact"
-    >
-    </v-switch>
-
-
+    <v-menu :close-on-content-click="false">
+      <template v-slot:activator="{ props }">
+        <v-btn class="profileBtn text-primary" color="lightprimary" variant="flat" rounded="pill" v-bind="props">
+          <v-avatar size="30" class="mr-2" :image="getEmailAvatar(authStore.user.info.email)">
+          </v-avatar>
+          <SettingsIcon stroke-width="1.5" />
+        </v-btn>
+      </template>
+      <v-sheet rounded="md" elevation="4">
+        <ProfileDD />
+      </v-sheet>
+    </v-menu>
   </v-app-bar>
 </template>
 

@@ -8,6 +8,7 @@ import {getUuid} from "@/util/uuid.ts";
 import {formatDate} from "../../../util/formatDate.ts";
 import { toast } from 'vuetify-sonner'
 import ConfirmButton from "@/components/ConfirmButton.vue";
+import {infoToast} from "@/util/ToastMessage.ts";
 
 const sessionStore = useSessionStore();
 const settingStore = useSettingStore();
@@ -19,14 +20,8 @@ async function createSession() {
   const lastSession = sessions.value[sessions.value.length - 1];
   if (lastSession != undefined) {
     if (lastSession.messages.length <= 1) {
-      toast("已经是最新的会话",{
-        duration: 3000,
-        cardProps: {
-          color: 'primary',
-          rounded: 'md'
-        },
-        prependIcon: 'mdi-information-outline',
-      });
+      infoToast("已经是最新的会话")
+
       return;
     }
   }
@@ -69,7 +64,7 @@ function deleteSession(id: string) {
     <template #prepend>
       <div class="pa-4">
         <v-img src="/src/assets/logo.svg" alt="Logo"
-               max-width="95"
+               width="95"
         ></v-img>
 
         <v-btn
