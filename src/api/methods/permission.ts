@@ -1,10 +1,11 @@
 import request from "../index";
 
 
-export function saveChannelPermission() {
+export function saveChannelPermission(data:{userId: number, channelId: number,}) {
   return request({
-    url: '/channel',
+    url: '/permission',
     method: 'post',
+    data: data
   });
 }
 

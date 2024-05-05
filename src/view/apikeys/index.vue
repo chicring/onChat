@@ -12,8 +12,9 @@ const userKeys = ref([])
 function copyTextToClipboard(text: string) {
   navigator.clipboard.writeText(text).then(() => {
     successToast('复制成功');
-  }).catch(() => {
-    errorToast('复制失败');
+  }).catch((error) => {
+    console.error('复制失败:', error);
+    errorToast('复制失败', text);
   });
 }
 function deleteItem(id : number) {

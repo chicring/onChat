@@ -125,10 +125,11 @@ const configItems = ref([
   >
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
-          variant="outlined"
           v-bind="activatorProps"
-          rounded="md"
           size="small"
+          icon
+          variant="text"
+          class="opacity-70"
       >
         <Settings2Icon></Settings2Icon>
       </v-btn>

@@ -31,7 +31,7 @@ export function findAllModel() {
   });
 }
 
-export function updateChannel(channel: { id: number, name?: string, apikey?: string, baseUrl?: string, enableProxy?: boolean, priority?: number, add?: Array<string>, remove?: Array<string> }) {
+export function updateChannel(channel: object ) {
   return request({
     url: '/channel',
     method: 'put',

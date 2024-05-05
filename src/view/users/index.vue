@@ -5,6 +5,7 @@ import {deleteChannelPermission, getChannelPermission} from "../../api/methods/p
 import AddPermission from "./AddPermission.vue";
 import headers from "@/view/users/headers.ts";
 import {successToast} from "@/util/ToastMessage.ts";
+import ConfirmButton from "@/components/ConfirmButton.vue";
 
 
 
@@ -44,7 +45,6 @@ function deleteItem(id : number){
 </script>
 
 <template>
-  <v-container>
     <v-card rounded="xl" flat>
       <v-card-title><h3>用户权限</h3></v-card-title>
       <v-card-subtitle>管理用户可使用的渠道</v-card-subtitle>
@@ -96,10 +96,11 @@ function deleteItem(id : number){
       </template>
 
       <template #item.action="{ item }">
-        <MenuDropdown @delete="deleteItem(item.id)"></MenuDropdown >
+        <ConfirmButton @confirm="deleteItem(item.id)" flat icon>
+          <TrashIcon></TrashIcon>
+        </ConfirmButton >
       </template>
     </v-data-table-server>
-  </v-container>
 </template>
 
 <style scoped>

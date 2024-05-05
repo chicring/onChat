@@ -33,7 +33,6 @@ const headers = [
     {
         title: '操作',
         key: 'actions',
-        sortable: false
     },
 ]
 

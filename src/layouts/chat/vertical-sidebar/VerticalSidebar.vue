@@ -63,7 +63,7 @@ function deleteSession(id: string) {
   >
     <template #prepend>
       <div class="pa-4">
-        <v-img src="/src/assets/logo.svg" alt="Logo"
+        <v-img src="/logo.svg" alt="Logo"
                width="95"
         ></v-img>
 

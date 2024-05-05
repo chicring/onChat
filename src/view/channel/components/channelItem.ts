@@ -14,21 +14,30 @@ export interface ChannelConfig {
     type: string;
     apiKey: string;
     baseUrl: string;
-    models: ModelConfig;
+    models: string;
     model: null;
     priority: number;
     usage: number;
     enableProxy: boolean;
     createdAt: number;
+    [key: string]: any;
 }
 
 
-const items = [
+export const items = [
+    {
+        label: '渠道名称',
+        subtitle: '自定义渠道名称',
+        placeholder: '渠道名称',
+        model: 'name',
+        icon: BrandStackshareIcon,
+        type: 'text'
+    },
     {
         label: '接口地址',
         subtitle: '需要包含http(s)://',
         placeholder: 'Base API URL',
-        model: 'baseApiUrl',
+        model: 'baseUrl',
         icon: LinkIcon,
         type: 'text'
     },
@@ -62,23 +71,13 @@ const items = [
         placeholder: 'Enable proxy',
         model: 'enableProxy',
         icon: BrandStackshareIcon,
-        type: 'checkbox'
+        type: 'switch'
     },
     {
         label: 'Enabled',
         subtitle: '是否启用',
         model: 'enabled',
         icon: BrandStackshareIcon,
-        type: 'checkbox'
-    },
-    {
-        label: '创建时间',
-        subtitle: '创建时间',
-        model: 'createdAt',
-        icon: BrandStackshareIcon,
-        type: 'time'
+        type: 'switch'
     }
 ]
-
-
-export default items;

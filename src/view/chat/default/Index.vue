@@ -4,8 +4,8 @@ import {Message, Session, useSessionStore} from "@/store/session.ts";
 import {onMounted, Ref, ref, watch,} from "vue";
 import type { PerfectScrollbarExpose } from 'vue3-perfect-scrollbar';
 import MarkdownText from "@/view/chat/default/components/Text.vue";
-import {formatDate} from "@/util/formatDate.ts";
-import ConfigDialog from "@/view/chat/default/components/ConfigDialog.vue";
+import ConfigDialog from "@/view/chat/default/tools/config/ConfigDialog.vue";
+import ConfirmButton from "@/components/ConfirmButton.vue";
 
 interface Props {
   sessionId?: string;
@@ -122,27 +122,26 @@ onMounted( async () => {
 <!--        <v-btn  ></v-btn>-->
 <!--      </v-col>-->
 <!--    </v-row>-->
-
+    <v-divider class="border-opacity-50"></v-divider>
     <v-btn class="floating-button" color="primary" v-if="showArrow" @click.stop="moveToBottom" variant="flat" icon="true"> <ChevronsDownIcon/></v-btn>
 
-    <div class="d-flex align-center">
-      <v-btn variant="outlined" rounded="md" size="small" class="mr-2" @click="clearAllMessages">
+    <div class="d-flex align-center ga-1">
+      <ConfirmButton class="opacity-70" icon variant="text" rounded="md" size="small"  @click="clearAllMessages">
         <TrashIcon/>
         <v-tooltip
             activator="parent"
             location="top"
         >清除聊天历史</v-tooltip>
+      </ConfirmButton>
+      <ConfigDialog :session-id="props.sessionId" :key="props.sessionId"></ConfigDialog>
+
+      <v-btn icon variant="text" class="opacity-70">
+        <WorldIcon></WorldIcon>
       </v-btn>
 
-      <v-chip-group color="primary"  rounded="md" variant="outlined" multiple>
-        <v-chip  size="small" >
-          <SlashIcon></SlashIcon>
-        </v-chip>
-        <v-chip  size="small">
-          <WorldIcon></WorldIcon>
-        </v-chip>
-      </v-chip-group>
-      <ConfigDialog :session-id="props.sessionId" :key="props.sessionId"></ConfigDialog>
+      <v-btn icon variant="text" class="opacity-70">
+        <SlashIcon></SlashIcon>
+      </v-btn>
 
     </div>
 
@@ -150,6 +149,7 @@ onMounted( async () => {
           class="chat-input"
           rounded="md"
           color="primary"
+          bg-color="gray100"
           variant="outlined"
           auto-grow
           rows="1"
@@ -157,12 +157,12 @@ onMounted( async () => {
           hide-details
           v-model="input.content"
           density="comfortable"
+          placeholder="enter发送 shift+enter换行"
           @keydown.enter.exact.prevent="sendMessage"
           @keydown.enter.shift.exact.prevent="input.content += '\n'"
-          style="{max-height: 100px; overflow-y: auto}"
           :readonly="sessionStore.isRelying"
       >
-        <template #append>
+        <template #append v-if="input.content">
           <div class="align-self-end">
             <v-btn
                 icon="true"

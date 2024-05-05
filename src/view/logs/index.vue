@@ -71,7 +71,6 @@ function getColor (consumeTime) {
 </script>
 
 <template>
-  <v-container>
     <v-card flat rounded="xl">
       <v-card-title>
         <h3>日志</h3>
@@ -214,7 +213,6 @@ function getColor (consumeTime) {
         <span>没有数据</span>
       </template>
     </v-data-table-server>
-  </v-container>
 </template>
 
 <style scoped>

@@ -17,7 +17,7 @@ export interface Session {
 
 export interface Message {
     id?: string;
-    date: number;
+    date?: number;
     role?: string;
     content?: string;
     token?: string;
@@ -51,12 +51,33 @@ export const useSessionStore  = defineStore(
         async function doChat(sessionId: string, messagelist: Message[], config: Config) {
             isRelying.value = true;
             const requestBody: OpenAiRequestBody = {
-                messages: messagelist.slice(Math.max(0, messagelist.length - config.max_history)).map((message) => {
-                    return {
-                        role: message.role,
-                        content: message.content,
-                    } as ReqMessage;
-                }),
+                messages: (() =>{
+                    if (messagelist.length > config.max_history) {
+                        let slicedMessages = messagelist.slice(messagelist.length - config.max_history);
+                        if (slicedMessages[0].role === 'assistant') {
+                            let previousMessage = messagelist[messagelist.length - config.max_history - 1];
+
+                            slicedMessages.unshift({
+                                role: previousMessage.role,
+                                content: previousMessage.content,
+                            } as ReqMessage);
+                        }
+                        return slicedMessages.map((message) => {
+                            return {
+                                role: message.role,
+                                content: message.content,
+                            } as ReqMessage;
+                        });
+                    } else {
+                        return messagelist.map((message) => {
+                            return {
+                                role: message.role,
+                                content: message.content,
+                            } as ReqMessage;
+                        })
+                    }
+                })(),
+
                 model: config.model,
                 max_tokens: config.max_tokens,
                 temperature: config.temperature,

@@ -2,11 +2,28 @@
 
 
 import {ref} from "vue";
+import {saveChannelPermission} from "@/api/methods/permission.ts";
 
-const data = ref({
+
+const data  = ref({
   userId: null,
-  channelId: null,
+  channelId: null
 })
+
+function submit() {
+  if (data.value.userId === null || data.value.channelId === null) {
+    console.log('error')
+    return
+  }else {
+    saveChannelPermission(data.value).then(() => {
+      console.log('success')
+    }).catch(() => {
+      console.log('error')
+    })
+  }
+}
+
+
 </script>
 
 <template>
@@ -62,7 +79,7 @@ const data = ref({
                 rounded="xl"
                 color="primary"
                 text="确定"
-                @click="isActive.value = false"
+                @click="submit(); isActive.value = false"
             >
             </v-btn>
           </v-card-actions>
