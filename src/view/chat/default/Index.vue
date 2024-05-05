@@ -6,6 +6,7 @@ import type { PerfectScrollbarExpose } from 'vue3-perfect-scrollbar';
 import MarkdownText from "@/view/chat/default/components/Text.vue";
 import ConfigDialog from "@/view/chat/default/tools/config/ConfigDialog.vue";
 import ConfirmButton from "@/components/ConfirmButton.vue";
+import Prompt from "@/view/chat/default/tools/prompt/Prompt.vue";
 
 interface Props {
   sessionId?: string;
@@ -63,6 +64,10 @@ function rearchBottom() {
 function clearAllMessages() {
   currentSession.value.messages = [];
   scrollbarApi.value?.ps?.update();
+}
+
+function addPrompt(prompt: string) {
+  input.value.content += prompt;
 }
 
 watch(() => sessionStore.lastRely?.content, () => {
@@ -139,9 +144,7 @@ onMounted( async () => {
         <WorldIcon></WorldIcon>
       </v-btn>
 
-      <v-btn icon variant="text" class="opacity-70">
-        <SlashIcon></SlashIcon>
-      </v-btn>
+      <Prompt></Prompt>
 
     </div>
 

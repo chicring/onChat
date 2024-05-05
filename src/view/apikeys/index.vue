@@ -50,6 +50,7 @@ onMounted(async () => {
                 class="mt-4 rounded-xl"
                 :headers="headers"
                 item-key="id"
+                :mobile="false"
   >
     <template #item.apiKey="{ item }">
       <span>********</span>

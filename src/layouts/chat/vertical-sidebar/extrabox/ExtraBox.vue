@@ -9,9 +9,13 @@
 
     </h6>
 
-    <div class="d-flex">
+    <div class="d-flex ga-2">
       <v-btn color="warning" icon="true" variant="text" to="/setting">
         <Settings2Icon></Settings2Icon>
+      </v-btn>
+
+      <v-btn color="warning" icon="true" variant="text" to="/prompt">
+        <PromptIcon></PromptIcon>
       </v-btn>
     </div>
   </div>

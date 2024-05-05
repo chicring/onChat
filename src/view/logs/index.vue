@@ -143,6 +143,7 @@ function getColor (consumeTime) {
         class="mt-4 rounded-xl"
         items-per-page-text="每页:"
         @update:options="loadItems"
+        :mobile="false"
     >
 
       <template #item.consumeTime="{ value }">

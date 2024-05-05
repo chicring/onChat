@@ -25,6 +25,11 @@ const ChatRoutes = {
             }
         },
         {
+            path: '/prompt',
+            name: 'prompt',
+            component: () => import('@/view/chat/prompt/index.vue'),
+        },
+        {
             path: '/setting',
             name: 'setting',
             component: () => import('@/view/chat/setting/Setting.vue'),

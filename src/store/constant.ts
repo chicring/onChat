@@ -7,5 +7,6 @@ export enum localStorageKey {
     Prompt = "prompt-store",
     Update = "chat-update",
     Auth = "on-chat-auth",
+    PromptList = "on-chat-prompt-list",
 }
 
