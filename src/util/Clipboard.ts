@@ -1,6 +1,12 @@
 import useClipboard from 'vue-clipboard3'
 
 const { toClipboard } = useClipboard()
-async function copyText(text: string) {
-    await toClipboard(text)
+
+
+function copyText(text: string) {
+    return toClipboard(text)
 }
+
+
+
+export default copyText;

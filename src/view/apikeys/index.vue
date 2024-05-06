@@ -6,17 +6,20 @@ import {formatDate} from "@/util/formatDate.ts";
 import {errorToast, successToast} from "@/util/ToastMessage.ts";
 import ConfirmButton from "@/components/ConfirmButton.vue";
 import AddKeyDialog from "@/view/apikeys/AddKeyDialog.vue";
+import copyText from "@/util/Clipboard.ts";
 
 const userKeys = ref([])
 
 function copyTextToClipboard(text: string) {
-  navigator.clipboard.writeText(text).then(() => {
+
+  copyText(text).then(() => {
     successToast('复制成功');
   }).catch((error) => {
     console.error('复制失败:', error);
     errorToast('复制失败', text);
   });
 }
+
 function deleteItem(id : number) {
   deleteApiKey(id).then(() => {
     successToast('删除成功');
