@@ -66,7 +66,10 @@ function clearAllMessages() {
   scrollbarApi.value?.ps?.update();
 }
 
+//添加提示
+const showPrompt = ref(false);
 function addPrompt(prompt: string) {
+  input.value.content = ''
   input.value.content += prompt;
 }
 
@@ -122,13 +125,11 @@ onMounted( async () => {
 
 
   <div class="chat-input">
-<!--    <v-row justify="center" class="transparent-background"  >-->
-<!--      <v-col cols="3" md="1">-->
-<!--        <v-btn  ></v-btn>-->
-<!--      </v-col>-->
-<!--    </v-row>-->
     <v-divider class="border-opacity-50"></v-divider>
     <v-btn class="floating-button" color="primary" v-if="showArrow" @click.stop="moveToBottom" variant="flat" icon="true"> <ChevronsDownIcon/></v-btn>
+
+    <Prompt v-if="showPrompt" @select-prompt="addPrompt($event)"></Prompt>
+
 
     <div class="d-flex align-center ga-1">
       <ConfirmButton class="opacity-70" icon variant="text" rounded="md" size="small"  @click="clearAllMessages">
@@ -144,8 +145,9 @@ onMounted( async () => {
         <WorldIcon></WorldIcon>
       </v-btn>
 
-      <Prompt></Prompt>
-
+      <v-btn  icon variant="text" class="opacity-70"  @click="showPrompt = !showPrompt">
+        <SlashIcon></SlashIcon>
+      </v-btn>
     </div>
 
     <v-textarea

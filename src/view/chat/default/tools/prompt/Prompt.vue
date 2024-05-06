@@ -1,36 +1,35 @@
 <script setup lang="ts">
 
 import {usePromptStore} from "@/store/prompt.ts";
-import {successToast} from "@/util/ToastMessage.ts";
-import {useDisplay} from "vuetify";
-
-const { mobile } = useDisplay()
 
 const promptStore = usePromptStore();
 const { prompts } = promptStore
 
+const emit = defineEmits(['selectPrompt']);
+function selectPrompt(prompt : string){
+  emit('selectPrompt', prompt)
+}
+
 </script>
 
 <template>
-  <v-btn icon variant="text" class="opacity-70">
-    <SlashIcon></SlashIcon>
+    <v-sheet rounded="md" flat class="mt-2" color="gray100">
+      <perfect-scrollbar style="max-height: 45vh" >
+        <v-list-item
+            v-for="(item, index) in prompts"
+            :key="index"
+            :value="item.content"
+            @click="selectPrompt(item.content)"
+            rounded="md"
+            class="mx-2"
+        >
+          <v-list-item-title><span class="text-subtitle-2 font-weight-bold">{{ item.title }}</span> </v-list-item-title>
+          <v-list-item-subtitle>{{ item.content }}</v-list-item-subtitle>
+        </v-list-item>
+      </perfect-scrollbar>
 
-    <v-menu activator="parent" location="top">
-      <v-sheet rounded="md" :width="mobile ? '100vw': '75vw' " flat>
-          <v-list>
-            <v-list-item
-                v-for="(item, index) in prompts"
-                :key="index"
-                :value="item.content"
-                lines="one"
-            >
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ item.content }}</v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
-      </v-sheet>
-    </v-menu>
-  </v-btn>
+    </v-sheet>
+
 </template>
 
 <style scoped>
