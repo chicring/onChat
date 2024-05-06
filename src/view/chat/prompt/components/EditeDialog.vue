@@ -1,31 +1,47 @@
 <script setup lang="ts">
-import {ref,} from "vue";
+import {Ref, ref,} from "vue";
 import {usePromptStore,Prompt} from "@/store/prompt.ts";
-import {successToast} from "@/util/ToastMessage.ts";
+import {infoToast, successToast} from "@/util/ToastMessage.ts";
+
+const props = defineProps<{
+  prompt: Prompt
+}>()
 
 const promptStore = usePromptStore();
 
 const dialog = ref(false)
 
-const data = ref({
-  title: '',
-  content: '',
+const data : Ref<Prompt> = ref({
+  id: props.prompt.id,
+  title: props.prompt.title,
+  content: props.prompt.content,
+  contentLength: props.prompt.content.length,
 })
 
 function submit(){
-
+  if (data.value.title.trim() === '' || data.value.content.trim() === '') {
+    infoToast('标题和内容不能为空')
+    return
+  }else {
+    data.value.contentLength = data.value.content.length
+    promptStore.updatePrompt(data.value)
+        .then(() => {
+          dialog.value = false
+          successToast('修改成功', data.value.title)
+        })
+  }
 }
+
 </script>
 
 <template>
   <v-btn
       @click="dialog = true"
       color="primary"
-      rounded="md"
-      flat
+      icon
+      variant="text"
   >
-    <PlusIcon></PlusIcon>
-    添加
+    <EditIcon></EditIcon>
   </v-btn>
 
   <v-dialog
@@ -39,7 +55,7 @@ function submit(){
         <v-text-field v-model="data.title" color="primary" bg-color="containerBg"  variant="outlined" label="标题" >
 
         </v-text-field>
-        <v-textarea v-model="data.content" color="primary" bg-color="containerBg"  variant="outlined" label="描述" >
+        <v-textarea v-model="data.content" color="primary" bg-color="containerBg"  variant="outlined" label="描述" counter >
 
         </v-textarea>
       </v-card-text>

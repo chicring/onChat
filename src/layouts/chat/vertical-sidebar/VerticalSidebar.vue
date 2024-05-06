@@ -9,6 +9,7 @@ import {formatDate} from "../../../util/formatDate.ts";
 import { toast } from 'vuetify-sonner'
 import ConfirmButton from "@/components/ConfirmButton.vue";
 import {infoToast} from "@/util/ToastMessage.ts";
+import {router} from "@/router";
 
 const sessionStore = useSessionStore();
 const settingStore = useSettingStore();
@@ -25,7 +26,6 @@ async function createSession() {
       return;
     }
   }
-
   const newMessage: Message = {
     date: Math.floor(Date.now() / 1000),
     role: "system",
@@ -39,7 +39,10 @@ async function createSession() {
     config: setting.value.config
   };
 
-  await sessionStore.addSession(newSession);
+  await sessionStore.addSession(newSession)
+      .then(() =>{
+        router.push({path: '/c/' + newSession.id});
+      });
 }
 
 function deleteSession(id: string) {
@@ -91,7 +94,7 @@ function deleteSession(id: string) {
       <v-list-item
           color="primary"
           rounded="lg"
-          v-for="item in sessions"
+          v-for="item in sessions.slice().reverse()"
           :key="item.id"
           :to=" '/c/' + item.id"
       >

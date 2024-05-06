@@ -7,6 +7,7 @@ import MarkdownText from "@/view/chat/default/components/Text.vue";
 import ConfigDialog from "@/view/chat/default/tools/config/ConfigDialog.vue";
 import ConfirmButton from "@/components/ConfirmButton.vue";
 import Prompt from "@/view/chat/default/tools/prompt/Prompt.vue";
+import Welcome from "@/view/chat/default/components/welcome.vue";
 
 interface Props {
   sessionId?: string;
@@ -60,6 +61,7 @@ function beginUp() {
 function rearchBottom() {
   showArrow.value = false;
 }
+
 //清楚所有聊天数据
 function clearAllMessages() {
   currentSession.value.messages = [];
@@ -71,6 +73,20 @@ const showPrompt = ref(false);
 function addPrompt(prompt: string) {
   input.value.content = ''
   input.value.content += prompt;
+  showPrompt.value = false;
+}
+
+function checkPrompt() {
+  showPrompt.value = input.value.content === '/';
+}
+
+//开启联网功能
+function openWeb() {
+  if (currentSession.value?.config.model.startsWith('web-')) {
+    currentSession.value.config.model = currentSession.value.config.model.replace('web-', '');
+  } else {
+    currentSession.value.config.model = 'web-' + currentSession.value.config.model;
+  }
 }
 
 watch(() => sessionStore.lastRely?.content, () => {
@@ -102,7 +118,7 @@ onMounted( async () => {
 
 <template>
   <div class="chat-container">
-    <perfect-scrollbar @ps-scroll-up="beginUp" @ps-y-reach-end="rearchBottom" ref="scrollbarApi" id="myList" class="scrollable-messages" v-if="currentSession !== undefined">
+    <perfect-scrollbar @ps-scroll-up="beginUp" @ps-y-reach-end="rearchBottom" ref="scrollbarApi" id="myList" class="scrollable-messages" v-if="currentSession?.messages.length">
       <v-list class="transparent-background">
         <v-list-item v-for="message in currentSession.messages" :key="message.id" class="px-1 mx-1" >
           <Messages :message="message"></Messages>
@@ -123,6 +139,7 @@ onMounted( async () => {
       </v-list>
     </perfect-scrollbar>
 
+    <welcome v-if="!currentSession?.messages.length"></welcome>
 
   <div class="chat-input">
     <v-divider class="border-opacity-50"></v-divider>
@@ -131,8 +148,8 @@ onMounted( async () => {
     <Prompt v-if="showPrompt" @select-prompt="addPrompt($event)"></Prompt>
 
 
-    <div class="d-flex align-center ga-1">
-      <ConfirmButton class="opacity-70" icon variant="text" rounded="md" size="small"  @click="clearAllMessages">
+    <div class="d-flex align-center ga-1" v-if="currentSession">
+      <ConfirmButton class="opacity-70" icon variant="text" rounded="md" size="small"  @confirm="clearAllMessages">
         <TrashIcon/>
         <v-tooltip
             activator="parent"
@@ -141,8 +158,13 @@ onMounted( async () => {
       </ConfirmButton>
       <ConfigDialog :session-id="props.sessionId" :key="props.sessionId"></ConfigDialog>
 
-      <v-btn icon variant="text" class="opacity-70">
-        <WorldIcon></WorldIcon>
+      <v-btn icon variant="text" class="opacity-70" @click.stop="openWeb">
+        <WorldOffIcon v-if="currentSession?.config.model.startsWith('web-')"></WorldOffIcon>
+        <WorldIcon v-else></WorldIcon>
+        <v-tooltip
+            activator="parent"
+            location="top"
+        >联网功能</v-tooltip>
       </v-btn>
 
       <v-btn  icon variant="text" class="opacity-70"  @click="showPrompt = !showPrompt">
@@ -162,10 +184,10 @@ onMounted( async () => {
           hide-details
           v-model="input.content"
           density="comfortable"
-          placeholder="enter发送 shift+enter换行"
+          placeholder="enter发送 shift+enter换行 /查看提示"
           @keydown.enter.exact.prevent="sendMessage"
           @keydown.enter.shift.exact.prevent="input.content += '\n'"
-          :readonly="sessionStore.isRelying"
+          @input="checkPrompt"
       >
         <template #append v-if="input.content">
           <div class="align-self-end">

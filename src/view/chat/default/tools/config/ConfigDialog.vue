@@ -137,16 +137,19 @@ const configItems = ref([
 
     <v-card rounded="md">
       <v-card-title>当前会话设置</v-card-title>
+
+      <v-divider></v-divider>
+
       <v-card-text>
         <v-row no-gutters justify="space-between">
-          <v-col>
+          <v-col cols="12" sm="4">
             <v-list-subheader class="text-medium-emphasis">
               <strong>模型(Model)</strong>
             </v-list-subheader>
             <v-list-item-subtitle>选择使用的默认模型</v-list-item-subtitle>
           </v-col>
           <v-spacer></v-spacer>
-          <v-col>
+          <v-col cols="12" sm="8">
             <v-select variant="outlined" :items="setting.models" density="comfortable" v-model="currentSession.config.model">
 
               <template #item="data">
@@ -186,14 +189,14 @@ const configItems = ref([
         </v-row>
         <v-row no-gutters>
           <template v-for="(item, index) in configItems" :key="index">
-            <v-col :cols="item.labelCols">
+            <v-col cols="12" sm="4">
               <v-list-subheader class="text-medium-emphasis">
                 <strong>{{ item.label }}</strong>
               </v-list-subheader>
               <v-list-item-subtitle>{{ item.subtitle }}</v-list-item-subtitle>
             </v-col>
 
-            <v-col :cols="item.inputCols">
+            <v-col cols="12" sm="8">
               <v-text-field
                   v-if="item.type === 'text'"
                   :placeholder="item.placeholder"
@@ -204,6 +207,7 @@ const configItems = ref([
                   type="number"
                   :append-inner-icon="item.icon"
                   :type="item.type"
+                  color="primary" bg-color="containerBg"
                   @click:append-inner="toggleVisibility(index)"
               >
               </v-text-field>
@@ -214,6 +218,7 @@ const configItems = ref([
                   :min="item.min"
                   :step="item.step"
                   thumb-label
+                  color="primary"
                   hide-details
               >
                 <template v-slot:append>
@@ -221,10 +226,11 @@ const configItems = ref([
                       v-model="setting.config[item.model]"
                       density="compact"
                       style="width: 70px"
-                      type="number"
                       hide-details
                       single-line
                       rounded="lg"
+                      readonly
+                      color="primary" bg-color="containerBg"
                       variant="outlined"
                   ></v-text-field>
                 </template>

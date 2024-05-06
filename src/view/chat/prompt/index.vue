@@ -5,6 +5,7 @@ import {storeToRefs} from "pinia";
 import {ref} from "vue";
 import AddDialog from "@/view/chat/prompt/components/AddDialog.vue";
 import ConfirmButton from "@/components/ConfirmButton.vue";
+import EditeDialog from "@/view/chat/prompt/components/EditeDialog.vue";
 
 const promptStore = usePromptStore();
 const {prompts} = storeToRefs(promptStore);
@@ -64,9 +65,8 @@ function deletePrompt(id : number){
         hover
     >
       <template #item.actions="{ item }">
-        <v-btn color="primary" rounded="md" flat icon="true" variant="text">
-          <EditIcon></EditIcon>
-        </v-btn>
+
+        <EditeDialog :prompt="item"></EditeDialog>
 
         <ConfirmButton color="primary" rounded="md" flat icon="true" variant="text" @confirm="deletePrompt(item.id)">
           <TrashIcon></TrashIcon>

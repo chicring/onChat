@@ -22,17 +22,24 @@ export const usePromptStore = defineStore(
         const prompts : Ref<Array<Prompt>> = ref([])
         prompts.value.push(defaultPrompt)
 
-        function addPrompt(prompt: Prompt){
+        async function addPrompt(prompt: Prompt){
             prompt.id = new Date().getTime()
             prompt.contentLength = prompt.content.length
             prompts.value.push(prompt)
         }
 
-        function removePrompt(id: number){
+        async function removePrompt(id: number){
             prompts.value = prompts.value.filter(item => item.id !== id)
         }
 
-        return {prompts, addPrompt , removePrompt}
+        async function updatePrompt(prompt: Prompt){
+            const index = prompts.value.findIndex(item => item.id === prompt.id)
+            if(index > -1){
+                prompts.value[index] = prompt
+            }
+        }
+
+        return {prompts, addPrompt , removePrompt, updatePrompt}
     },
     {
         persist: {
