@@ -6,6 +6,8 @@ import {ref} from "vue";
 import AddDialog from "@/view/chat/prompt/components/AddDialog.vue";
 import ConfirmButton from "@/components/ConfirmButton.vue";
 import EditeDialog from "@/view/chat/prompt/components/EditeDialog.vue";
+import {successToast} from "@/util/ToastMessage.ts";
+import ImportDialog from "@/view/chat/prompt/components/ImportDialog.vue";
 
 const promptStore = usePromptStore();
 const {prompts} = storeToRefs(promptStore);
@@ -22,12 +24,19 @@ const search = ref('')
 function deletePrompt(id : number){
   promptStore.removePrompt(id);
 }
+
+async function delectAllPrompt(){
+  promptStore.deleteAllPrompt()
+      .then(() => {
+        successToast("删除成功")
+      })
+}
+
 </script>
 
 <template>
   <v-tabs>
     <v-tab>本地</v-tab>
-    <v-tab>在线</v-tab>
   </v-tabs>
 
   <v-sheet class="mt-8" rounded="md">
@@ -52,8 +61,12 @@ function deletePrompt(id : number){
       <v-col cols="12" md="8">
         <div class="d-flex justify-end ga-2 mr-2">
           <AddDialog></AddDialog>
-          <v-btn color="primary" rounded="md" flat>导入</v-btn>
-          <v-btn color="primary" rounded="md" flat>清空</v-btn>
+
+          <ImportDialog></ImportDialog>
+
+          <ConfirmButton color="primary" rounded="md" flat @confirm="delectAllPrompt" title="清空操作">
+            清空
+          </ConfirmButton>
         </div>
       </v-col>
 

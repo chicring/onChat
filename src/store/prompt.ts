@@ -39,7 +39,11 @@ export const usePromptStore = defineStore(
             }
         }
 
-        return {prompts, addPrompt , removePrompt, updatePrompt}
+        async function deleteAllPrompt(){
+            prompts.value = []
+        }
+
+        return {prompts, addPrompt , removePrompt, updatePrompt, deleteAllPrompt}
     },
     {
         persist: {

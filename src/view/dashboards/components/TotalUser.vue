@@ -16,7 +16,7 @@ onMounted(async () => {
   <v-card elevation="0" class="bg-secondary overflow-hidden bubble-shape bubble-secondary-shape" min-height="180">
     <v-card-text>
     <v-row no-gutters>
-      <v-col cols="9">
+      <v-col cols="8" md="9">
         <div class="d-flex align-start mb-6">
           <v-btn color="darksecondary" icon rounded="md" variant="flat">
             <UsersIcon stroke-width="1.5" width="25" />
@@ -29,7 +29,7 @@ onMounted(async () => {
         <span class="text-subtitle-1 opacity-70 font-weight-medium text-white">用户总数</span>
       </v-col>
 
-      <v-col cols="3" style="z-index: 999" align-self="end">
+      <v-col cols="4" md="3" style="z-index: 999" align-self="end">
         <div>
           <v-chip class="mb-2" size="small">
             <template #prepend>
