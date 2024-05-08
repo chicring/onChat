@@ -311,8 +311,16 @@ const configItems = ref([
               </template>
             </v-slider>
           </v-col>
-
         </template>
+      </v-row>
+
+      <v-row>
+        <v-col>
+
+        </v-col>
+        <v-col>
+
+        </v-col>
       </v-row>
     </v-card-text>
   </v-card>

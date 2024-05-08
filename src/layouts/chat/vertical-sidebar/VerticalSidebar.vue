@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import ExtraBox from "@/layouts/chat/vertical-sidebar/extrabox/ExtraBox.vue";
-import {useSessionStore, Session, Message} from "@/store/session.ts";
-import {useSettingStore} from "@/store/setting.ts";
+import {useSessionStore} from "@/store/session.ts";
 import {useCustomizerStore} from "@/store/customizer.ts";
 import {storeToRefs} from "pinia";
-import {getUuid} from "@/util/uuid.ts";
-import {formatDate} from "../../../util/formatDate.ts";
-import { toast } from 'vuetify-sonner'
+import {formatDate} from "@/util/formatDate.ts";
 import ConfirmButton from "@/components/ConfirmButton.vue";
-import {infoToast} from "@/util/ToastMessage.ts";
+import {infoToast, warningToast} from "@/util/ToastMessage.ts";
 import {router} from "@/router";
 
 const sessionStore = useSessionStore();
-const settingStore = useSettingStore();
+
 const customizer = useCustomizerStore();
 
 const {sessions} = storeToRefs(sessionStore);
-const {setting} = storeToRefs(settingStore);
+
 async function createSession() {
   const lastSession = sessions.value[sessions.value.length - 1];
   if (lastSession != undefined) {
@@ -26,23 +23,11 @@ async function createSession() {
       return;
     }
   }
-  const newMessage: Message = {
-    date: Math.floor(Date.now() / 1000),
-    role: "system",
-    content: "有什么可以帮你的吗",
-  }
-  const newSession: Session = {
-    id: getUuid(),
-    topic: "随便聊聊",
-    messages: [newMessage],
-    lastUpdate: Math.floor(Date.now() / 1000),
-    config: setting.value.config
-  };
-
-  await sessionStore.addSession(newSession)
-      .then(() =>{
-        router.push({path: '/c/' + newSession.id});
-      });
+  await sessionStore.createSession().then( id =>{
+    router.push({path: '/c/' + id});
+  }).catch((err : any) => {
+    warningToast(err.message)
+  });
 }
 
 function deleteSession(id: string) {

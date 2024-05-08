@@ -3,10 +3,21 @@
 import {Message} from "@/store/session.ts";
 import MarkdownText from "./Text.vue";
 import {formatDate} from "../../../../util/formatDate.ts";
+import copyText from "@/util/Clipboard.ts";
+import {errorToast, successToast} from "@/util/ToastMessage.ts";
 
 const props = defineProps<{
   message: Message
 }>();
+
+function copyTextToClipboard() {
+
+  copyText(props.message.content).then(() => {
+    successToast('复制成功');
+  }).catch((error) => {
+    errorToast('复制失败');
+  });
+}
 
 </script>
 
@@ -27,8 +38,28 @@ const props = defineProps<{
       <template #text>
         <MarkdownText :text="props.message.content"></MarkdownText>
       </template>
+
     </v-card>
   </v-col>
+  <div class="mx-4 ga-2" v-if="props.message.role !== 'user'">
+
+    <v-btn size="30" variant="text" class="opacity-30" icon>
+      <ArrowBackUpIcon size="20"></ArrowBackUpIcon>
+      <v-tooltip
+          activator="parent"
+          location="top"
+      >重试</v-tooltip>
+    </v-btn>
+
+    <v-btn size="30" variant="text" class="opacity-30" icon @click="copyTextToClipboard">
+      <CopyIcon size="20"></CopyIcon>
+      <v-tooltip
+          activator="parent"
+          location="top"
+      >复制</v-tooltip>
+    </v-btn>
+
+  </div>
 
 </template>
 

@@ -50,6 +50,8 @@ class GptClient{
                         const reader = response.body!.getReader();
                         pump(reader)
                     }
+                }).catch(err => {
+                    onError(new Error(err));
                 })
 
                 function pump(reader: any) {
@@ -78,12 +80,14 @@ class GptClient{
                             }
                         }
                         pump(reader);
+                    }).catch((err: any) => {
+                        console.log(err.message);
+                        onError(new Error(err));
                     });
                 }
 
             }catch (err: any) {
                 console.log(err.message)
-
                 onError(new Error(err));
             }
 

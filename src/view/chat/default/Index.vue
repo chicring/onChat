@@ -11,6 +11,7 @@ import Welcome from "@/view/chat/default/components/welcome.vue";
 import {getUuid} from "@/util/uuid.ts";
 import {storeToRefs} from "pinia";
 import {useSettingStore} from "@/store/setting.ts";
+import {warningToast} from "@/util/ToastMessage.ts";
 
 interface Props {
   sessionId?: string;
@@ -19,9 +20,6 @@ const props = defineProps<Props>()
 
 const sessionStore = useSessionStore();
 const currentSession: Ref<Session | undefined > = ref()
-
-const settingStore = useSettingStore();
-const {setting} = storeToRefs(settingStore);
 
 const input = ref({
   content: "",
@@ -32,36 +30,24 @@ const sendMessage = async () => {
   if (input.value.content.trim() === "") {
     return;
   }
-console.log("currentSession", currentSession);
-  if(!currentSession.value){
-    console.log("currentSession is null");
-    const newMessage: Message = {
-      date: Math.floor(Date.now() / 1000),
-      role: "system",
-      content: "有什么可以帮你的吗",
-    }
-    const newSession: Session = {
-      id: getUuid(),
-      topic: "随便聊聊",
-      messages: [newMessage],
-      lastUpdate: Math.floor(Date.now() / 1000),
-      config: setting.value.config
-    };
-
-    await sessionStore.addSession(newSession)
-        .then(() =>{
-          currentSession.value = sessionStore.sessions[sessionStore.sessions.length - 1];
-        });
-  }
-
   const message : Message = {
     role: "user",
     content: input.value.content,
     date: Math.floor(Date.now() / 1000),
   }
-  currentSession.value.messages.push(message);
+  if (currentSession.value) {
+    currentSession.value.messages.push(message);
+  }else {
+    await sessionStore.createSession()
+        .then(() =>{
+          currentSession.value = sessionStore.sessions[sessionStore.sessions.length - 1];
+          currentSession.value.messages.push(message);
+        }).catch((err : any) => {
+          warningToast(err.message)
+        });
+  }
+  await sessionStore.doChat(currentSession.value.id, currentSession.value.messages, currentSession.value.config);
   input.value.content = "";
-  await sessionStore.doChat(props.sessionId, currentSession.value.messages, currentSession.value.config);
   moveToBottom();
 }
 
