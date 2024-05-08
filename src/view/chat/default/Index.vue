@@ -11,7 +11,10 @@ import Welcome from "@/view/chat/default/components/welcome.vue";
 import {getUuid} from "@/util/uuid.ts";
 import {storeToRefs} from "pinia";
 import {useSettingStore} from "@/store/setting.ts";
+import { useDisplay } from 'vuetify'
 import {warningToast} from "@/util/ToastMessage.ts";
+
+const { mdAndUp } = useDisplay()
 
 interface Props {
   sessionId?: string;
@@ -129,7 +132,7 @@ onMounted( async () => {
 </script>
 
 <template>
-  <div class="chat-container">
+  <div class="chat-container mx-auto" :style="{ 'width' : mdAndUp ? '75%' : '100%'}">
     <perfect-scrollbar @ps-scroll-up="beginUp" @ps-y-reach-end="rearchBottom" ref="scrollbarApi" id="myList" class="scrollable-messages" v-if="currentSession?.messages.length">
       <v-list class="transparent-background">
         <v-list-item v-for="message in currentSession.messages" :key="message.id" class="px-1 mx-1" >
